@@ -17,7 +17,7 @@ BNO080 myIMU;
 
 String mac_address;
 unsigned long lastTime = 0;
-unsigned long timerDelay = 10;
+unsigned long timerDelay = 50000;
 
 WiFiMulti WiFiMulti;
 WebSocketsClient webSocket;
@@ -150,6 +150,10 @@ void setup() {
 void loop() {
   // if ((millis() - lastTime) > timerDelay) {
     webSocket.loop();
+    if ((millis() - lastTime) > timerDelay) {
+    uint16_t data = analogRead(25);
+        batterylife=map(data, 0, 4095, 0, 100));
+    }
     if (myIMU.dataAvailable() == true) {
       float quatI = myIMU.getQuatI();
       float quatJ = myIMU.getQuatJ();
@@ -157,7 +161,7 @@ void loop() {
       float quatReal = myIMU.getQuatReal();
 
 
-    String url = String(mac_address) + " " + String(quatI) + " " + String(quatJ) + " " + String(quatK) +  " " + String(quatReal);
+    String url = String(mac_address) + " " + String(quatI) + " " + String(quatJ) + " " + String(quatK) +  " " + String(quatReal) + "" + String(data);
 
     Serial.println(url);
 
