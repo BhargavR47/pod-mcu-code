@@ -148,7 +148,9 @@ void setup() {
 }
 
 void loop() {
-  // if ((millis() - lastTime) > timerDelay) {
+  if ((millis() - lastTime) > timerDelay) {
+     batt_v = analogRead(A0);
+  }
     webSocket.loop();
     if (myIMU.dataAvailable() == true) {
       float quatI = myIMU.getQuatI();
@@ -157,7 +159,7 @@ void loop() {
       float quatReal = myIMU.getQuatReal();
 
 
-    String url = String(mac_address) + " " + String(quatI) + " " + String(quatJ) + " " + String(quatK) +  " " + String(quatReal);
+    String url = String(mac_address) + " " + String(quatI) + " " + String(quatJ) + " " + String(quatK) +  " " + String(quatReal) + " " + String(batt_v);
 
     Serial.println(url);
 
